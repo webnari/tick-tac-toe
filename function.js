@@ -46,9 +46,58 @@ function toggleTurn(){
    acitvated.classList.remove("active")
 }
 
-// 一旦はランダムに答えを返す。
+// 一旦、縦と横に三つ並んだ場合を判定
 function judge(){
-  const result = ['○','×', null]
-  const r = Math.floor(Math.random() * 3)
-  return result[r]
+  // 最終的な結果を格納する変数
+  // null ・・・継続
+  // ○    ・・・○の勝ち
+  // ×    ・・・×の勝ち
+  judge_reuslt = null
+
+  // 横に3つ並んだ時の結果を判定
+  // sizeが3より大きい場合も想定して、最大値にsizeを使用。
+ for( var x = 1; x <= size; x++ ){
+   texts = []
+   for( var y = 1; y <= size ; y++){
+     texts = appendTexts(texts, x, y)
+     if(!texts[0]){break}
+   }
+   judge_reuslt = isFinalized(texts)
+   if (judge_reuslt){ return judge_reuslt}
+ }
+
+ // 縦に3つ並んだ時の結果を判定
+ // sizeが3より大きい場合も想定して、最大値にsizeを使用。
+ for( var y = 1; y <= size; y++ ){
+   texts = []
+   for( var x = 1; x <= size ; x++){
+     texts = appendTexts(texts, x, y)
+     if(!texts[0]){break}
+   }
+   judge_reuslt = isFinalized(texts)
+   if (judge_reuslt){ return judge_reuslt}
+ }
+  return judge_reuslt
+}
+
+// 勝敗が決まったかどうかを判定する関数
+//  listが3つとも同じ記号 ex. 三つとも○かつ
+//  その記号が'-'でない場合
+function isFinalized(list){
+  let result = Array.from(new Set(list))
+  if (texts.length === size && result.length === 1 ){
+    if(result[0] === '-'){ return null }
+    judge_reuslt = result[0]
+    return judge_reuslt
+  }
+  return null
+}
+
+// それぞれのセルを取得して与えられた配列に詰める関数
+// 取得した値が'-'だったら空を返却
+function appendTexts(a, x, y){
+  text = document.querySelector(`#pannel-${x}-${y}`).innerText
+  if( text === '-' ){ return []}
+  a.push(text)
+  return a
 }
