@@ -1,5 +1,9 @@
+const size = document.querySelectorAll('.table .row').length
+
+
 // .table の中の要素がクリックされたらイベントが発火
 document.querySelector('.table').addEventListener('click',function(e){
+  if(document.querySelector('#finished').value === 'true'){return}
   // ○か×が入力されていたら、処理を行わす中断する。
   if(e.target.innerText !== '-'){return}
 
@@ -17,6 +21,14 @@ document.querySelector('.table').addEventListener('click',function(e){
 
   // 順番を交代する。
   toggleTurn()
+
+  // すでに勝敗が決まっているかチェック
+  result = judge()
+  if (result){
+    document.querySelector('#message').innerText = `${result} win !!!!!!!!`
+    document.querySelector('#message').classList.remove('hidden')
+    document.querySelector('#finished').value = 'true'
+  }
 })
 
 // ○と×の切り替えメソッド
@@ -32,4 +44,11 @@ function toggleTurn(){
    // 最初の段階でactivateされていたものから
    // .activeを取り除く
    acitvated.classList.remove("active")
+}
+
+// 一旦はランダムに答えを返す。
+function judge(){
+  const result = ['○','×', null]
+  const r = Math.floor(Math.random() * 3)
+  return result[r]
 }
