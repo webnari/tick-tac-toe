@@ -14,4 +14,22 @@ document.querySelector('.table').addEventListener('click',function(e){
   // 今のターンの印（ ○ or × )を入力する。
   e.target.classList.add("active")
   e.target.innerText = document.querySelector('.btn.active').text
+
+  // 順番を交代する。
+  toggleTurn()
 })
+
+// ○と×の切り替えメソッド
+function toggleTurn(){
+   // すでに.activeがあてられている.btnを取得
+   const acitvated = document.querySelector('.btn.active')
+
+   // 一度両方のボタンをactiveにする
+   document.querySelectorAll('.btn').forEach(function( btn ) {
+     btn.classList.add("active")
+   })
+
+   // 最初の段階でactivateされていたものから
+   // .activeを取り除く
+   acitvated.classList.remove("active")
+}
